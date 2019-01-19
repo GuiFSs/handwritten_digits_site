@@ -21,7 +21,7 @@ model = load_model('mnist_model.h5')
 app = Flask(__name__)
 
 @app.route('/')
-def main():
+def index():
     return render_template('index.html')
 
 
@@ -66,6 +66,6 @@ def classify_image(image_str):
     return prediction_str
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='127.0.0.1', port=port)
+# if __name__ == '__main__':
+#     port = int(os.environ.get('PORT', 5000))
+#     app.run(host='127.0.0.1', port=port)
