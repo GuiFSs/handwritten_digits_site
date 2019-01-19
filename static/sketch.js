@@ -20,11 +20,11 @@ function setup() {
   canvas.parent('canvas-container');
 
   let resetBtn = select('#reset');
-  predictBtn = select('#predict');
+  // predictBtn = select('#predict');
   predictedVal = select('#predicted-val');
 
   resetBtn.mousePressed(resetCanvas);
-  predictBtn.mousePressed(predictImage);
+  // predictBtn.mousePressed(predictImage);
 
   background(0);
 }
@@ -120,7 +120,7 @@ function predictImage() {
 }
 
 function classifyBtnDisabled(disabled) {
-  predictBtn.elt.disabled = disabled;
+  // predictBtn.elt.disabled = disabled;
 }
 
 function resetCanvas() {
