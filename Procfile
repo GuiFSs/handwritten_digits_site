@@ -1,1 +1,1 @@
-web: gunicorn handwrittenpredict:application --log-file -
+web: gunicorn main:application --log-file -
