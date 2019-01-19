@@ -82,8 +82,8 @@ function predictImage() {
 
     console.log(img);
 
-    const base_url = 'http://127.0.0.1:5000/';
-    const response = await fetch(base_url + 'predict', settings);
+    // const base_url = 'http://127.0.0.1:5000/';
+    const response = await fetch('/predict', settings);
     const responseJson = await response.json();
     let predicted = responseJson.prediction;
     predictedVal.elt.innerText = 'predicted value: ' + predicted;
