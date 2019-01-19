@@ -18,7 +18,7 @@ from keras.models import load_model
 global graph, model
 
 graph = tf.get_default_graph()
-model = load_model('mnist_model.h5')
+model = load_model('test_mnist_model.h5')
 
 
 app = Flask(__name__)

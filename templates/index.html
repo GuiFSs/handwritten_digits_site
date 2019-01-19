@@ -1,10 +1,9 @@
 <html>
   <head>
-    <script src="static/p5/p5.min.js"></script>
-    <script src="static/p5/addons/p5.dom.min.js"></script>
-    <script src="static/sketch.js"></script>
-
     <style>
+      .canvas {
+        touch-action: none;
+      }
       .canvas,
       .buttons {
         text-align: center;
@@ -12,14 +11,16 @@
     </style>
   </head>
   <body>
-    <div class="canvas" id="canvas-container">
-      <br />
-      <h3 id="predicted-val">predicted value:</h3>
-    </div>
+    <div class="canvas" id="canvas-container"></div>
     <br />
     <div class="buttons">
+      <h3 id="predicted-val">predicted value:</h3>
       <button id="reset">Reset Canvas</button><br /><br />
       <button id="predict">Predict</button>
     </div>
+
+    <script src="static/p5/p5.min.js"></script>
+    <script src="static/p5/addons/p5.dom.min.js"></script>
+    <script src="static/sketch.js"></script>
   </body>
 </html>

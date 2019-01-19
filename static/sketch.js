@@ -1,14 +1,21 @@
 let drawing = [];
 let currentPath = [];
-let isDrawing = true;
+let isDrawing = false;
 
 let predictBtn;
 let predictedVal;
 
 function setup() {
-  canvas = createCanvas(200, 200);
-  canvas.mousePressed(startPath);
+  canvas = createCanvas(100, 100);
+  canvas.mousePressed(e => startPath(e));
   canvas.mouseReleased(endPath);
+
+  canvas.touchMoved(touchStartPath);
+  canvas.touchEnded(touchEndPath);
+
+  canvas.canvas.addEventListener('mouseout', () => {
+    isDrawing = false;
+  });
 
   canvas.parent('canvas-container');
 
@@ -26,9 +33,10 @@ function draw() {
   background(0);
   if (isDrawing) {
     currentPath.push({
-      x: mouseX,
-      y: mouseY
+      x: pmouseX || mouseX,
+      y: pmouseY || mouseY
     });
+    predictImage();
   }
 
   drawing.map(paths => {
@@ -51,6 +59,24 @@ function startPath() {
     y: mouseY
   });
   drawing.push(currentPath);
+  return false;
+}
+
+function touchStartPath() {
+  isDrawing = true;
+  // currentPath = [];
+  currentPath.push({
+    x: mouseX,
+    y: mouseY
+  });
+  drawing.push(currentPath);
+  predictImage();
+  return false;
+}
+
+function touchEndPath() {
+  isDrawing = false;
+  currentPath = [];
 }
 
 function endPath() {
@@ -58,9 +84,7 @@ function endPath() {
 }
 
 function predictImage() {
-  console.log('wtf');
-
-  // classifyBtnDisabled(true);
+  classifyBtnDisabled(true);
 
   saveFrames('out', 'png', 1, 1, async data => {
     img = data;
@@ -80,17 +104,18 @@ function predictImage() {
       body: JSON.stringify(img)
     };
 
-    console.log(img);
+    try {
+      const response = await fetch('/predict', settings);
+      const responseJson = await response.json();
+      let predicted = responseJson.prediction;
+      predictedVal.elt.innerText = 'predicted value: ' + predicted;
+    } catch (err) {
+      return;
+    }
 
-    // const base_url = 'http://127.0.0.1:5000/';
-    const response = await fetch('/predict', settings);
-    const responseJson = await response.json();
-    let predicted = responseJson.prediction;
-    predictedVal.elt.innerText = 'predicted value: ' + predicted;
-
-    console.log(responseJson);
+    // console.log(responseJson);
     classifyBtnDisabled(false);
-    resetCanvas();
+    // resetCanvas();
   });
 }
 
@@ -102,3 +127,34 @@ function resetCanvas() {
   drawing = [];
   clear();
 }
+
+// Prevent scrolling when touching the canvas
+document.body.addEventListener(
+  'touchstart',
+  function(e) {
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  },
+  false
+);
+document.body.addEventListener(
+  'touchend',
+  function(e) {
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  },
+  false
+);
+document.body.addEventListener(
+  'touchMoved',
+  function(e) {
+    console.log(e);
+
+    if (e.target == canvas) {
+      e.preventDefault();
+    }
+  },
+  false
+);
